@@ -44,8 +44,8 @@ echo Getting "$diff_tex"
 latexdiff "$old_tex" "$tex_fn"  > "$diff_tex"
 
 # https://tex.stackexchange.com/questions/478124/latexdiff-dont-work-in-table-with-scalebox 
-# For example, if the command above could not track some contents within certain commands, 
-# you can use '--append-trextcmd' to add them. For example:
+# For example, if the statement above could not track some changes within certain latex commands,
+# you can use '--append-textcmd' to add them. For example:
 #
 # latexdiff --append-textcmd="resizebox" --append-textcmd="codedataavailability" "$old_tex" "$tex_fn"  > "$diff_tex"
 
