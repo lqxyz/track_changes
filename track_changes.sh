@@ -6,12 +6,11 @@
 # The names of the old and new archive files
 old_zip='manuscript_draft_old.zip'
 new_zip='manuscript_draft_new.zip'
+
 # Old and new tex file names that have changes (Names should be the same)
 tex_fn="manuscript_draft.tex"
-
 # Output file name
 diff_tex="track_changes.tex"
-
 
 check_zip_file()
 {
