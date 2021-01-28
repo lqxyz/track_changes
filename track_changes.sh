@@ -4,8 +4,8 @@
 # For example, the archives (.zip) could be downloaded from Overleaf based on label versions
 
 # The names of the old and new archive files
-old_zip='manuscript_draft_old.zip'
-new_zip='manuscript_draft_new.zip'
+old_zip="manuscript_draft_old.zip"
+new_zip="manuscript_draft_new.zip"
 
 # Old and new tex file names that have changes (Names should be the same)
 tex_fn="manuscript_draft.tex"
@@ -20,14 +20,14 @@ check_zip_file()
 check_zip_file "$old_zip"
 check_zip_file "$new_zip"
 
-old_dir='old'
-new_dir='new'
+old_dir=old
+new_dir=new
 
 # unzip will create exdir (-d) if it does not exist
 unzip -o "$old_zip" -d $old_dir
 unzip -o "$new_zip" -d $new_dir
 
-diff_dir='diff'
+diff_dir=diff
 [[ ! -d $diff_dir ]] && mkdir $diff_dir
 
 # Copy files from new and old directories to diff_dir
@@ -41,9 +41,13 @@ cd $diff_dir
 
 # Get and compile the diff.tex
 echo Getting "$diff_tex"
-# latexdiff "$old_tex" "$tex_fn"  > "$diff_tex"
+latexdiff "$old_tex" "$tex_fn"  > "$diff_tex"
+
 # https://tex.stackexchange.com/questions/478124/latexdiff-dont-work-in-table-with-scalebox 
-latexdiff --append-textcmd="resizebox" --append-textcmd="codedataavailability" "$old_tex" "$tex_fn"  > "$diff_tex"
+# For example, if the command above could not track some contents within certain commands, 
+# you can use '--append-trextcmd' to add them. For example:
+#
+# latexdiff --append-textcmd="resizebox" --append-textcmd="codedataavailability" "$old_tex" "$tex_fn"  > "$diff_tex"
 
 echo Compiling "$diff_tex"
 # https://mg.readthedocs.io/latexmk.html
