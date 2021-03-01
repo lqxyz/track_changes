@@ -49,6 +49,11 @@ latexdiff "$old_tex" "$tex_fn"  > "$diff_tex"
 #
 # latexdiff --append-textcmd="resizebox" --append-textcmd="codedataavailability" "$old_tex" "$tex_fn"  > "$diff_tex"
 
+# Or use the latexdiffcite to track citation changes nicely
+# Need to change latexdiff argument via 'append_args' in latexdiffcite.py
+#
+# python latexdiffcite.py file "$old_tex" "$tex_fn" -o "$diff_tex"
+
 echo Compiling "$diff_tex"
 # https://mg.readthedocs.io/latexmk.html
 # https://tex.stackexchange.com/questions/120019/make-latexmk-ignore-errors-and-finish-compiling
