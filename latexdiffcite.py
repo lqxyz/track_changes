@@ -25,10 +25,13 @@ log = logging.getLogger(__name__)
 # Add argument options for specific journals
 journal = 'GMD'
 
+# Recommend to add --flatten flag, see http://pages.cs.wisc.edu/~driscoll/software/latex/latexdiff.html
+basic_args = '' # '--flatten'
+
 if 'GMD' in journal.upper():
-    append_args = '--append-textcmd="resizebox" --append-textcmd="codedataavailability"'
+    append_args = ' '.join([basic_args,  '--append-textcmd=resizebox --append-textcmd=codedataavailability'])
 else:
-    append_args = ''
+    append_args = basic_args
 
 
 class Config(object):
