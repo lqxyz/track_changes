@@ -25,7 +25,7 @@ log = logging.getLogger(__name__)
 # Add argument options for specific journals
 journal = 'GMD'
 
-# Recommend to add --flatten flag, see http://pages.cs.wisc.edu/~driscoll/software/latex/latexdiff.html
+# Recommend to add --flatten flag if contain some included files (?), see http://pages.cs.wisc.edu/~driscoll/software/latex/latexdiff.html
 basic_args = '' # '--flatten'
 
 if 'GMD' in journal.upper():
