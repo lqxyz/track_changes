@@ -8,9 +8,9 @@ old_zip="manuscript_draft_old.zip"
 new_zip="manuscript_draft_new.zip"
 
 # Old and new tex file names that have changes (Names should be the same)
-tex_fn="manuscript_draft.tex"
+tex_fn="manuscript.tex"
 # Output file name
-diff_tex="track_changes.tex"
+diff_tex="diff.tex"
 
 check_zip_file()
 {
@@ -27,32 +27,63 @@ new_dir=new
 unzip -o "$old_zip" -d $old_dir
 unzip -o "$new_zip" -d $new_dir
 
-diff_dir=diff
+diff_dir=diff_test
 [[ ! -d $diff_dir ]] && mkdir $diff_dir
 
-# Copy files from new and old directories to diff_dir
-cp -r $new_dir/* $diff_dir/
+# check if $tex_fn exists in unzipped directory
+# otherwise find the tex file within the unzipped directory
+cd $old_dir
+if [[ ! -f "$tex_fn" ]]; then
+    num=$(ls '.tex' | wc -l)
+    if [[ $num -gt 1 ]]; then
+        echo "Multiple tex files! Please specify the main tex file name." && exit 1
+    else
+        tex_fn=$(ls *.tex)
+    fi
+    echo $tex_fn
+fi
+cd ..
 
-old_tex=${tex_fn/.tex/_old.tex}
-cp "$old_dir/$tex_fn" "$diff_dir/$old_tex"
+old_tex='old.tex'
+new_tex='new.tex'
+
+compile_old_new_files()
+{
+    # $1 is the directory name (old or new)
+    tex_nm=${tex_fn/.tex/}_"$1".tex
+    cd $1
+    mv "$tex_fn" "$tex_nm"
+    latexmk -f -pdf -xelatex -interaction=nonstopmode "$tex_nm"
+    cp -r ./* ../"$diff_dir"
+    cd ..
+
+    [[ "$1" == *"old"* ]] && old_tex="$tex_nm"
+    [[ "$1" == *"new"* ]] && new_tex="$tex_nm"
+}
+
+# Copy files from new and old directories to diff_dir
+compile_old_new_files $old_dir
+echo $old_tex
+compile_old_new_files $new_dir
+echo $new_tex
 
 # Now go into the diff_dir
 cd $diff_dir
 
 # Get and compile the diff.tex
 echo Getting "$diff_tex"
-latexdiff "$old_tex" "$tex_fn"  > "$diff_tex"
+latexdiff "$old_tex" "$new_tex"  > "$diff_tex"
 
 # https://tex.stackexchange.com/questions/478124/latexdiff-dont-work-in-table-with-scalebox 
 # For example, if the statement above could not track some changes within certain latex commands,
 # you can use '--append-textcmd' to add them. For example:
 #
-# latexdiff --append-textcmd="resizebox" --append-textcmd="codedataavailability" "$old_tex" "$tex_fn"  > "$diff_tex"
+# latexdiff --flatten --append-textcmd="resizebox" --append-textcmd="codedataavailability" "$old_tex" "$new_tex"  > "$diff_tex"
 
 # Or use the latexdiffcite to track citation changes nicely
 # Need to change latexdiff argument via 'append_args' in latexdiffcite.py
 #
-# python latexdiffcite.py file "$old_tex" "$tex_fn" -o "$diff_tex"
+# python latexdiffcite.py file "$old_tex" "$new_tex" -o "$diff_tex"
 
 echo Compiling "$diff_tex"
 # https://mg.readthedocs.io/latexmk.html
