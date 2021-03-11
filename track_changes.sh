@@ -72,7 +72,7 @@ cd $diff_dir
 
 # Get and compile the diff.tex
 echo Getting "$diff_tex"
-latexdiff "$old_tex" "$new_tex"  > "$diff_tex"
+latexdiff "$old_tex" "$new_tex" > "$diff_tex"
 
 # https://tex.stackexchange.com/questions/478124/latexdiff-dont-work-in-table-with-scalebox 
 # If the statement above could not track some changes within certain latex commands,
