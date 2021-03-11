@@ -75,10 +75,12 @@ echo Getting "$diff_tex"
 latexdiff "$old_tex" "$new_tex"  > "$diff_tex"
 
 # https://tex.stackexchange.com/questions/478124/latexdiff-dont-work-in-table-with-scalebox 
-# For example, if the statement above could not track some changes within certain latex commands,
-# you can use '--append-textcmd' to add them. For example:
+# If the statement above could not track some changes within certain latex commands,
+# you can use '--append-textcmd' to add them.
 #
-# latexdiff --flatten --append-textcmd="resizebox" --append-textcmd="codedataavailability" "$old_tex" "$new_tex"  > "$diff_tex"
+# For example, for journal GMD (https://www.geoscientific-model-development.net/), we can use:
+# latexdiff --flatten --append-textcmd=resizebox --append-textcmd=codedataavailability \
+#           --append-textcmd=authorcontribution "$old_tex" "$new_tex"  > "$diff_tex"
 
 # Or use the latexdiffcite to track citation changes nicely
 # Need to change latexdiff argument via 'append_args' in latexdiffcite.py
